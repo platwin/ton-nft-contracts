@@ -12,13 +12,17 @@
     "allowJs": false,
     "outDir": "build/packages",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "declaration": true,
     "strictNullChecks": true,
     "strict": true,
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "paths": {
-      "*": [ "./types/*", "./node_modules/@types"]
+      "*": [
+        "./types/*",
+        "./node_modules/@types"
+      ]
     }
   },
   "exclude": [

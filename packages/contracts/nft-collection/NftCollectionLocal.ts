@@ -1,5 +1,11 @@
 import {SmartContract} from "ton-contract-executor";
-import {buildNftCollectionDataCell, CollectionMintItemInput, NftCollectionData, Queries, RoyaltyParams} from "./NftCollection.data";
+import {
+    buildNftCollectionDataCell,
+    CollectionMintItemInput,
+    NftCollectionData,
+    Queries,
+    RoyaltyParams
+} from "./NftCollection.data";
 import {NftCollectionSource} from "./NftCollection.source";
 import {Address, Cell, CellMessage, CommonMessageInfo, contractAddress, InternalMessage, Slice, toNano} from "ton";
 import BN from "bn.js";
@@ -54,8 +60,8 @@ export class NftCollectionLocal {
 
     async getNftContent(index: number, nftIndividualContent: Cell): Promise<string> {
         let res = await this.contract.invokeGetMethod('get_nft_content', [
-            { type: 'int', value: index.toString() },
-            { type: 'cell', value: nftIndividualContent.toBoc({ idx: false }).toString('base64')}
+            {type: 'int', value: index.toString()},
+            {type: 'cell', value: nftIndividualContent.toBoc({idx: false}).toString('base64')}
         ])
 
         if (res.type !== 'success') {
@@ -85,7 +91,7 @@ export class NftCollectionLocal {
         }))
     }
 
-    async sendBatchDeployNft(from: Address, value: BN,params: { queryId?: number, items: CollectionMintItemInput[] }) {
+    async sendBatchDeployNft(from: Address, value: BN, params: { queryId?: number, items: CollectionMintItemInput[] }) {
         let msgBody = Queries.batchMint(params)
 
         return await this.contract.sendInternalMessage(new InternalMessage({
@@ -127,7 +133,7 @@ export class NftCollectionLocal {
         }))
     }
 
-    async sendEditContent(from: Address, params: { queryId?: number,  collectionContent: string, commonContent: string,  royaltyParams: RoyaltyParams  }) {
+    async sendEditContent(from: Address, params: { queryId?: number, collectionContent: string, commonContent: string, royaltyParams: RoyaltyParams }) {
         let msgBody = Queries.editContent(params)
         return await this.contract.sendInternalMessage(new InternalMessage({
             to: this.address,
@@ -166,6 +172,7 @@ export class NftCollectionLocal {
         })
         return new NftCollectionLocal(contract, config.address)
     }
+
     static async createFromContract(contract: SmartContract, address: Address) {
         contract.setC7Config({
             myself: address
